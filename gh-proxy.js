@@ -1,18 +1,18 @@
-
 // ==UserScript==
-// @icon          https://github.githubassets.com/favicon.ico
 // @name          GitHub 访问代理助手
 // @namespace     lzwme.github.fast
 // @author        lzwme
 // @homepageURL   https://github.com/lzwme/vm-gh-proxy-cn
 // @supportURL    https://github.com/lzwme/vm-gh-proxy-cn/issues
-// @@updateURL    https://ghproxy.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.js
+// @updateURL     https://ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.js
+// @downloadURL   https://ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.js
 // @license       MIT License
 // @description   GitHub 访问加速助手。支持 GitHub 的 clone、release/raw/zip 下载加速
 // @include       *://github.com/*
 // @include       *://github*
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
+// @icon          https://github.githubassets.com/favicon.ico
 // @version       1.0.0
 // ==/UserScript==
 
@@ -27,7 +27,7 @@
       format: url => `${Mirrors.ghproxy.url}/${url.replace(/^\//, '')}`,
     },
     ghproxy1: {
-      url: 'https://gh.api.99988866.xyz',
+      url: 'https://gh.api.99988866.xyz/github.com',
       name: 'ghproxy-99988866',
       desc: 'ghproxy 代理',
       types: ['clone', 'download', 'raw'],

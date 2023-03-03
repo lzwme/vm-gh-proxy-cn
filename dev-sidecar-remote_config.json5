@@ -1,0 +1,84 @@
+{
+    "server": {
+        "intercepts": {
+            "github.com": {
+                "/.*/.*/releases/download/": {
+                    "redirect": "ghproxy.com/https://github.com/",
+                    "desc": "release文件加速下载跳转地址"
+                },
+                "/.*/.*/archive/": {
+                    "redirect": "download.fastgit.org"
+                },
+                "/.*/.*/blame/": {
+                    "redirect": "hub.fastgit.org"
+                },
+                "^/[^/]+/[^/]+(/releases(/.*)?)?$": {
+                    "script": [
+                        "github"
+                    ],
+                    "desc": "clone加速复制链接脚本"
+                },
+                "/.*": {
+                    "proxy": "github.com",
+                    "desc": "目前禁掉sni就可以直接访问，如果后续github.com的ip被封锁，只能再走proxy模式",
+                    "sni": "baidu.com"
+                },
+                "/.*/.*/raw/": {
+                  "replace": "(.+)\\/raw\\/(.+)",
+                  "proxy": "raw.fastgit.org$1/$2",
+                  "sni": "baidu.com"
+                }
+            },
+            "github.githubassets.com": {
+                ".*": {
+                    "proxy": "github.githubassets.com",
+                    "sni": "baidu.com"
+                }
+            },
+            "www.gstatic.com": {
+                "/recaptcha/.*": {
+                    "proxy": "www.recaptcha.net"
+                }
+            }
+        },
+        "dns": {
+            "mapping": {
+                "*jetbrains.com": "quad9",
+                "*azureedge.net": "quad9",
+                "*stackoverflow.com": "quad9"
+            },
+            "speedTest": {
+                "interval": 300000
+            }
+        }
+    },
+    "plugin": {
+        "overwall": {
+            "targets": {
+                "*azureedge.net": true,
+                "github.com": true,
+                "*wikimedia.org": true,
+                "v2ex.com": true,
+                "*cloudfront.net": true,
+                "*bing.com": true,
+                "*discourse-cdn.com": true,
+                "*gravatar.com": true,
+                "*docker.com": true,
+                "*vueuse.org": true,
+                "*elastic.co": true,
+                "*optimizely.com": true,
+                "*stackpathcdn.com": true,
+                "*fastly.net": true,
+                "*cloudflare.com": true,
+                "*233v2.com": true,
+                "*v2fly.org": true,
+                "*telegram.org": true,
+                "*amazon.com": true,
+                "*googleapis.com": true,
+                "*cloudflareinsights.com": true,
+                "*.intlify.dev": true,
+                "*segment.io": true
+            }
+        }
+    }
+}

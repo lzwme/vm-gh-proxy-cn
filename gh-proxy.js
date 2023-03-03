@@ -13,7 +13,7 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.0.0
+// @version       1.0.1
 // ==/UserScript==
 
 (function () {
@@ -28,8 +28,8 @@
     },
     ghproxy1: {
       url: 'https://gh.api.99988866.xyz/github.com',
-      name: 'ghproxy-99988866',
-      desc: 'ghproxy 代理',
+      name: 'ghproxy-xyz',
+      desc: 'ghproxy 代理（演示站）',
       types: ['clone', 'download', 'raw'],
       format: url => `${Mirrors.ghproxy1.url}/${url.replace(/^\//, '')}`,
     },
@@ -70,28 +70,28 @@
       types: ['raw'],
     },
     // fastgitdl: {
-    //   url: 'https://download.fastgit.org',
+    //   url: 'https://download.fastgit.org', // todo: only release files、zip
     //   name: 'fastgit-dl',
     //   desc: 'fastgit download',
     //   types: ['download'],
     // },
-    // fastgitxyz: {
-    //   url: 'https://hub.fastgit.xyz',
-    //   name: 'fastgit',
-    //   desc: '由@KevinZonda推动的FastGit项目',
-    //   types: ['clone', 'mirror'],
-    // },
     // wuyanzheshui: {
     //   url: 'https://github.wuyanzheshui.workers.dev',
     //   name: 'CF加速 1',
-    //   desc: '每日10万次调用上限,由wuyanzheshui提供',
+    //   desc: '【CF加速】每日10万次调用上限,由 wuyanzheshui 提供',
     //   types: ['mirror', 'clone', 'download'],
     // },
     // rc1844: {
     //   "url": "https://github.rc1844.workers.dev",
     //   "name": "CF加速 2",
-    //   "desc": "每日10万次调用上限,由@lzwme提供",
+    //   "desc": "【CF加速】每日10万次调用上限,由 @rc1844 提供",
     //   types: ['clone', 'download', 'raw'],
+    // },
+    // lzwme: {
+    //   "url": "https://gh.lzwme.workers.dev",
+    //   "name": "CF加速 2",
+    //   "desc": "【CF加速】每日10万次调用上限,由 @renxia 提供",
+    //   types: ['clone', 'download', 'raw', 'mirror'],
     // },
     // gitclone: {
     //   "url": "https://gitclone.com/github.com",
@@ -102,7 +102,7 @@
   };
   const OtherUrl = [
     ["https://github.com/lzwme/vm-gh-proxy-cn", "脚本Github仓库地址，点个赞谢谢"],
-    ["https://greasyfork.org/zh-CN/scripts/397419", "GreasyFork地址，请评分收藏"],
+    ["https://greasyfork.org/zh-CN/scripts/397419", "GreasyFork 地址，请评分收藏"],
     ["https://doc.fastgit.org/", "FastGit，请仔细甄别"],
     ["https://d.serctl.com", "GitHub中转下载"],
     ["https://gitee.com/organizations/mirrors/projects", "Gitee 极速下载"],
@@ -112,6 +112,9 @@
   MirrorsList.forEach(item => {
     if (!item.format) {
       item.format = (href, type) => {
+        if (type === 'raw' && ['Statically', 'jsDelivr'].includes(item.name)) {
+          return item.url + href.replace(`${repo}/raw/`, `${repo}@`);
+        }
         const sep = item.url.includes('@') ? ':' : '/';
         return `${item.url}${sep}${href.replace(/^\//, '')}`;
       };
@@ -150,13 +153,12 @@
    * 添加Raw列表
    */
   function addRawList() {
-    const rawUrl = $("#raw-url");
+    let rawUrl = $("#raw-url");
+    if (!rawUrl.length) rawUrl = $(`a[data-testid="raw-button"]:last`);
     const rawHref = rawUrl.attr('href');
     if (!rawHref) return;
 
-    // rawHtml(11, MirrorUrl[11][0] + href.replace("/raw", ""));
-    // rawHtml(9, MirrorUrl[9][0] + href.replace("/raw/", "@"));
-    // rawHtml(12, MirrorUrl[12][0] + href.replace("/raw", ""));
+    $('.raw-btn-proxy').remove();
     RawSet.forEach((item) => {
       const span = rawUrl.clone().removeAttr('id');
 
@@ -165,7 +167,7 @@
         title: item.desc,
         target: "_blank",
       });
-      span.text(item.name);
+      span.text(item.name).addClass('raw-btn-proxy');
       rawUrl.before(span);
     });
   }
@@ -303,17 +305,12 @@
       const preBtn = $('#gh-proxy-btn');
       const href =$el.attr('href').replace(/^https:\/\/github\.com/, '');
       const proxyHref = `${Mirrors.ghproxy.url}${href}`;
-      if (
-        !/\/(blob|release|archive)\//.test(href) ||
-        href.startsWith('http') ||
-        preBtn.attr('href') === proxyHref) {
-          return;
-        }
+      if (!/\/(blob|release|archive)\//.test(href) || href.startsWith('http') || preBtn.attr('href') === proxyHref) return;
 
       $('#gh-proxy-btn').remove();
       const $btn = $(`<a class="btn" href="${proxyHref}" target="_blank" title="proxy link" id="gh-proxy-btn">🚀</a>`);
 
-      $el.parent().append($btn).css({ position: 'relative' });
+      $el.parent().append($btn).css({ position: 'relative', overflow: 'visible' });
       $btn.css({ position: 'absolute', left: 120, top: 2 });
       $btn.on('mouseleave', () => $btn.remove());
     });

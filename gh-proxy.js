@@ -102,7 +102,7 @@
   };
   const OtherUrl = [
     ["https://github.com/lzwme/vm-gh-proxy-cn", "脚本Github仓库地址，点个赞谢谢"],
-    ["https://greasyfork.org/zh-CN/scripts/397419", "GreasyFork 地址，请评分收藏"],
+    ["https://greasyfork.org/zh-CN/scripts/461115", "GreasyFork 地址，请评分收藏"],
     ["https://doc.fastgit.org/", "FastGit，请仔细甄别"],
     ["https://d.serctl.com", "GitHub中转下载"],
     ["https://gitee.com/organizations/mirrors/projects", "Gitee 极速下载"],

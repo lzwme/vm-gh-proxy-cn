@@ -13,7 +13,7 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.0.1
+// @version       1.0.3
 // ==/UserScript==
 
 (function () {
@@ -68,6 +68,12 @@
       "name": "Statically",
       "desc": "只能浏览图片和源代码文件，文件大小限制为30MB",
       types: ['raw'],
+    },
+    gitmirror: {
+      // url: 'https://gitmirror.com',
+      url: 'https://hub.gitmirror.com',
+      desc: 'GitMirror 为您提供 Github 静态资源加速服务',
+      types: ['download', 'raw'],
     },
     // fastgitdl: {
     //   url: 'https://download.fastgit.org', // todo: only release files、zip

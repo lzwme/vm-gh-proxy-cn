@@ -19,6 +19,13 @@
 (function () {
   const clonePrefix = 'git clone --depth 1 ';
   const Mirrors = {
+    ghproxynet: {
+      url: 'https://ghproxy.net/github.com',
+      name: 'gh-net',
+      desc: 'ghproxy.net 代理',
+      types: ['clone', 'download', 'raw'],
+      format: url => `${Mirrors.ghproxy.url}/${url.replace(/^\//, '')}`,
+    },
     ghproxy: {
       url: 'https://ghproxy.com/github.com',
       name: 'ghproxy',
@@ -28,7 +35,7 @@
     },
     ghproxy1: {
       url: 'https://gh.api.99988866.xyz/github.com',
-      name: 'ghproxy-xyz',
+      name: 'gh-xyz',
       desc: 'ghproxy 代理（演示站）',
       types: ['clone', 'download', 'raw'],
       format: url => `${Mirrors.ghproxy1.url}/${url.replace(/^\//, '')}`,

@@ -13,7 +13,7 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.0.3
+// @version       1.0.4
 // ==/UserScript==
 
 (function () {
@@ -27,7 +27,7 @@
       format: url => `${Mirrors.ghproxy.url}/${url.replace(/^\//, '')}`,
     },
     ghproxy: {
-      url: 'https://ghproxy.com/github.com',
+      url: 'https://mirror.ghproxy.com/github.com',
       name: 'ghproxy',
       desc: 'ghproxy 代理',
       types: ['clone', 'download', 'raw'],
@@ -46,22 +46,10 @@
       "desc": "由@netnr提供",
       types: ['mirror', 'raw', 'download'],
     },
-    fastgitSsh: {
-      "url": "git@ssh.fastgit.org",
-      "name": "FastGit",
-      "desc": "fastgit ssh",
-      types: ['clone'],
-    },
-    fastgitSsh: {
-      "url": "https://raw.fastgit.org",
-      "name": "FastGit-raw",
-      "desc": "fastgit raw",
-      types: ['raw'],
-    },
-    zhlh6: {
-      "url": "git@git.zhlh6.cn",
-      "name": "加速你的Github",
-      "desc": "利用ucloud提供的GlobalSSH",
+    gitclone: {
+      "url": "https://gitclone.com/github.com",
+      "name": "gitclone加速",
+      "desc": "gitclone加速",
       types: ['clone'],
     },
     jsDelivr: {
@@ -81,6 +69,24 @@
       url: 'https://hub.gitmirror.com',
       desc: 'GitMirror 为您提供 Github 静态资源加速服务',
       types: ['download', 'raw'],
+    },
+    fastgitSsh: {
+      "url": "git@ssh.fastgit.org",
+      "name": "FastGit",
+      "desc": "fastgit ssh",
+      types: ['clone'],
+    },
+    fastgitSsh: {
+      "url": "https://raw.fastgit.org",
+      "name": "FastGit-raw",
+      "desc": "fastgit raw",
+      types: ['raw'],
+    },
+    zhlh6: {
+      "url": "git@git.zhlh6.cn",
+      "name": "加速你的Github",
+      "desc": "利用ucloud提供的GlobalSSH",
+      types: ['clone'],
     },
     // fastgitdl: {
     //   url: 'https://download.fastgit.org', // todo: only release files、zip

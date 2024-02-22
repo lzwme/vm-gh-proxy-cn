@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name          GitHub 访问代理助手
 // @namespace     lzwme.github.fast
-// @author        lzwme
+// @author        renxia (https://lzw.me)
 // @homepageURL   https://github.com/lzwme/vm-gh-proxy-cn
 // @supportURL    https://github.com/lzwme/vm-gh-proxy-cn/issues
-// @updateURL     https://ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.js
-// @downloadURL   https://ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.js
+// @updateURL     https://mirror.ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.user.js
+// @downloadURL   https://mirror.ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.user.js
 // @license       MIT License
 // @description   GitHub 访问加速助手。支持 GitHub 的 clone、release/raw/zip 下载加速
 // @include       *://github.com/*
@@ -13,7 +13,7 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.0.4
+// @version       1.1.0
 // ==/UserScript==
 
 (function () {
@@ -24,27 +24,36 @@
       name: 'gh-net',
       desc: 'ghproxy.net 代理',
       types: ['clone', 'download', 'raw'],
-      format: url => `${Mirrors.ghproxy.url}/${url.replace(/^\//, '')}`,
+      format(url) {
+        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
+      },
     },
     ghproxy: {
       url: 'https://mirror.ghproxy.com/github.com',
       name: 'ghproxy',
       desc: 'ghproxy 代理',
       types: ['clone', 'download', 'raw'],
-      format: url => `${Mirrors.ghproxy.url}/${url.replace(/^\//, '')}`,
+      format(url) {
+        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
+      },
     },
     ghproxy1: {
       url: 'https://gh.api.99988866.xyz/github.com',
       name: 'gh-xyz',
       desc: 'ghproxy 代理（演示站）',
       types: ['clone', 'download', 'raw'],
-      format: url => `${Mirrors.ghproxy1.url}/${url.replace(/^\//, '')}`,
+      format(url) {
+        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
+      },
     },
-    netnr: {
-      "url": "https://cors.zme.ink/https://github.com",
-      "name": "netnr",
-      "desc": "由@netnr提供",
-      types: ['mirror', 'raw', 'download'],
+    xyz201704: {
+      url: 'https://scoop.201704.xyz/github.com',
+      name: '201704.xyz',
+      desc: '开源的 scoop 国内镜像方案',
+      types: ['raw', 'download'],
+      format(url) {
+        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
+      },
     },
     gitclone: {
       "url": "https://gitclone.com/github.com",
@@ -76,17 +85,23 @@
       "desc": "fastgit ssh",
       types: ['clone'],
     },
-    fastgitSsh: {
-      "url": "https://raw.fastgit.org",
-      "name": "FastGit-raw",
-      "desc": "fastgit raw",
-      types: ['raw'],
-    },
+    // fastgitSsh: {
+    //   "url": "https://raw.fastgit.org",
+    //   "name": "FastGit-raw",
+    //   "desc": "fastgit raw",
+    //   types: ['raw'],
+    // },
     zhlh6: {
       "url": "git@git.zhlh6.cn",
       "name": "加速你的Github",
       "desc": "利用ucloud提供的GlobalSSH",
       types: ['clone'],
+    },
+    netnr: {
+      "url": "https://cors.zme.ink/https://github.com",
+      "name": "netnr",
+      "desc": "由@netnr提供",
+      types: ['mirror', 'download'], // 'raw'
     },
     // fastgitdl: {
     //   url: 'https://download.fastgit.org', // todo: only release files、zip
@@ -125,16 +140,18 @@
     ["https://doc.fastgit.org/", "FastGit，请仔细甄别"],
     ["https://d.serctl.com", "GitHub中转下载"],
     ["https://gitee.com/organizations/mirrors/projects", "Gitee 极速下载"],
+    ["https://lzw.me/tools/", '忒有趣工具箱']
   ];
   const MirrorsList = Object.values(Mirrors);
 
   MirrorsList.forEach(item => {
     if (!item.format) {
       item.format = (href, type) => {
-        if (type === 'raw' && ['Statically', 'jsDelivr'].includes(item.name)) {
-          return item.url + href.replace(`${repo}/raw/`, `${repo}@`);
+        if (type === 'raw' && ['Statically', 'jsDelivr', 'gh-xyz'].includes(item.name)) {
+          return item.url + href.replace(`${repo}/raw/`, `${repo}@`).replace('https://github.com', '');
         }
         const sep = item.url.includes('@') ? ':' : '/';
+        if (item.url.includes('github.com')) return `${item.url}${sep}${href.replace(/^(https:\/\/github.com)?\//, '')}`;
         return `${item.url}${sep}${href.replace(/^\//, '')}`;
       };
     }

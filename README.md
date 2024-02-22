@@ -18,7 +18,7 @@ GitHub 访问代理助手。一个适合中国大陆用户使用的浏览器油�
 然后在浏览器地址栏输入如下地址，应当会被油猴插件检测到并跳转到安装确认界面（若未检测到，可手动复制其内容，在油猴插件中新建脚本并填入）：
 
 ```txt
-https://ghproxy.com/https://raw.githubusercontent.com/lzwme/vm-gh-proxy-cn/main/gh-proxy.js
+https://mirror.ghproxy.com/https://raw.githubusercontent.com/lzwme/vm-gh-proxy-cn/main/gh-proxy.user.js
 ```
 
 ## 关于 Github 代理访问体验提升的几种策略
@@ -30,7 +30,7 @@ https://ghproxy.com/https://raw.githubusercontent.com/lzwme/vm-gh-proxy-cn/main/
 - `host绑定`：DNS 测速获取 host、host 绑定软件定时更新
   - `host 切换管理软件 SwitchHosts`: <brew|scoop> install switchhosts
   - `host定时更新`：https://gitlab.cn/ineo6/hosts/-/raw/master/next-hosts
-  - `host定时更新`：https://ghproxy.com/https://raw.githubusercontent.com/521xueweihan/GitHub520/main/hosts
+  - `host定时更新`：https://mirror.ghproxy.com/https://raw.githubusercontent.com/521xueweihan/GitHub520/main/hosts
 - `浏览器插件网页助手`
   - [violentmonkey(油猴插件)](https://violentmonkey.github.io/get-it/)
   - [Git Master 插件](https://github.com/ineo6/git-master)

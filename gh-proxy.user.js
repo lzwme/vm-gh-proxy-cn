@@ -13,7 +13,8 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.1.0
+// @version       1.1.1
+// @update        2024.02.29 14:30
 // ==/UserScript==
 
 (function () {
@@ -75,6 +76,7 @@
     },
     gitmirror: {
       // url: 'https://gitmirror.com',
+      name: 'gitmirror',
       url: 'https://hub.gitmirror.com',
       desc: 'GitMirror 为您提供 Github 静态资源加速服务',
       types: ['download', 'raw'],
@@ -147,6 +149,12 @@
   MirrorsList.forEach(item => {
     if (!item.format) {
       item.format = (href, type) => {
+        if (type === 'download') {
+          if (['gitmirror'].includes(item.name)) {
+            if (href.startsWith('/')) href = `github.com${href}`;
+          }
+        }
+
         if (type === 'raw' && ['Statically', 'jsDelivr', 'gh-xyz'].includes(item.name)) {
           return item.url + href.replace(`${repo}/raw/`, `${repo}@`).replace('https://github.com', '');
         }
@@ -222,7 +230,7 @@
 
       DownloadSet.forEach(item => {
         const span1 = $(clone.html().replace("Download ZIP", `Download ZIP(${item.name})`)).attr({
-          href: item.format(href),
+          href: item.format(href, 'download'),
           title: item.desc,
         });
         span.append(span1);
@@ -243,7 +251,7 @@
       .after(`<div style="position: absolute; right: 180px; top: 0;">${
         DownloadSet.map((item) => {
           return `<a class="flex-1 btn btn-outline get-repo-btn BtnGroup-item" style="float: none; border-color: var(--color-btn-outline-text)"
-            href="${item.format(href)}" title="${item.desc}">${item.name}</a>`;
+            href="${item.format(href, 'download')}" title="${item.desc}">${item.name}</a>`;
         }).join('')
       }</div>`);
       $el.parent().parent().css({ position: 'relative' });

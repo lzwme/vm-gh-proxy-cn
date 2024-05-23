@@ -13,8 +13,8 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.1.1
-// @update        2024.02.29 14:30
+// @version       1.1.2
+// @update        2024.05.23
 // ==/UserScript==
 
 (function () {
@@ -33,6 +33,24 @@
       url: 'https://mirror.ghproxy.com/github.com',
       name: 'ghproxy',
       desc: 'ghproxy 代理',
+      types: ['clone', 'download', 'raw'],
+      format(url) {
+        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
+      },
+    },
+    ghpscc: {
+      url: 'https://ghps.cc/github.com',
+      name: 'ghproxy',
+      desc: '基于 gh-proxy 的代理',
+      types: ['clone', 'download', 'raw'],
+      format(url) {
+        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
+      },
+    },
+    ddlctop: {
+      url: 'https://gh.ddlc.top/github.com',
+      name: 'ghproxy',
+      desc: '基于 gh-proxy 的代理',
       types: ['clone', 'download', 'raw'],
       format(url) {
         return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
@@ -75,10 +93,10 @@
       types: ['raw'],
     },
     gitmirror: {
-      // url: 'https://gitmirror.com',
       name: 'gitmirror',
       url: 'https://hub.gitmirror.com',
-      desc: 'GitMirror 为您提供 Github 静态资源加速服务',
+      home: 'https://www.7ed.net/gitmirror/hub.html',
+      desc: '加速下载 Github Release、Archive 等文件',
       types: ['download', 'raw'],
     },
     fastgitSsh: {

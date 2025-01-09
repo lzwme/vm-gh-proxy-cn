@@ -13,26 +13,17 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.1.2
-// @update        2024.05.23
+// @version       1.1.3
+// @update        2025.01.09
 // ==/UserScript==
 
 (function () {
   const clonePrefix = 'git clone --depth 1 ';
   const Mirrors = {
-    ghproxynet: {
-      url: 'https://ghproxy.net/github.com',
-      name: 'gh-net',
-      desc: 'ghproxy.net 代理',
-      types: ['clone', 'download', 'raw'],
-      format(url) {
-        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
-      },
-    },
-    ghproxy: {
-      url: 'https://mirror.ghproxy.com/github.com',
-      name: 'ghproxy',
-      desc: 'ghproxy 代理',
+    moeyy: {
+      url: 'https://github.moeyy.xyz/github.com',
+      name: 'moeyy',
+      desc: 'github.moeyy.xyz 代理',
       types: ['clone', 'download', 'raw'],
       format(url) {
         return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
@@ -40,7 +31,7 @@
     },
     ghpscc: {
       url: 'https://ghps.cc/github.com',
-      name: 'ghproxy',
+      name: 'ghps',
       desc: '基于 gh-proxy 的代理',
       types: ['clone', 'download', 'raw'],
       format(url) {
@@ -49,7 +40,7 @@
     },
     ddlctop: {
       url: 'https://gh.ddlc.top/github.com',
-      name: 'ghproxy',
+      name: 'ddlc',
       desc: '基于 gh-proxy 的代理',
       types: ['clone', 'download', 'raw'],
       format(url) {
@@ -58,7 +49,7 @@
     },
     ghproxy1: {
       url: 'https://gh.api.99988866.xyz/github.com',
-      name: 'gh-xyz',
+      name: '99988866',
       desc: 'ghproxy 代理（演示站）',
       types: ['clone', 'download', 'raw'],
       format(url) {
@@ -67,7 +58,7 @@
     },
     xyz201704: {
       url: 'https://scoop.201704.xyz/github.com',
-      name: '201704.xyz',
+      name: '201704',
       desc: '开源的 scoop 国内镜像方案',
       types: ['raw', 'download'],
       format(url) {
@@ -76,7 +67,7 @@
     },
     gitclone: {
       "url": "https://gitclone.com/github.com",
-      "name": "gitclone加速",
+      "name": "gitclone",
       "desc": "gitclone加速",
       types: ['clone'],
     },
@@ -111,48 +102,12 @@
     //   "desc": "fastgit raw",
     //   types: ['raw'],
     // },
-    zhlh6: {
-      "url": "git@git.zhlh6.cn",
-      "name": "加速你的Github",
-      "desc": "利用ucloud提供的GlobalSSH",
-      types: ['clone'],
-    },
     netnr: {
       "url": "https://cors.zme.ink/https://github.com",
       "name": "netnr",
       "desc": "由@netnr提供",
       types: ['mirror', 'download'], // 'raw'
     },
-    // fastgitdl: {
-    //   url: 'https://download.fastgit.org', // todo: only release files、zip
-    //   name: 'fastgit-dl',
-    //   desc: 'fastgit download',
-    //   types: ['download'],
-    // },
-    // wuyanzheshui: {
-    //   url: 'https://github.wuyanzheshui.workers.dev',
-    //   name: 'CF加速 1',
-    //   desc: '【CF加速】每日10万次调用上限,由 wuyanzheshui 提供',
-    //   types: ['mirror', 'clone', 'download'],
-    // },
-    // rc1844: {
-    //   "url": "https://github.rc1844.workers.dev",
-    //   "name": "CF加速 2",
-    //   "desc": "【CF加速】每日10万次调用上限,由 @rc1844 提供",
-    //   types: ['clone', 'download', 'raw'],
-    // },
-    // lzwme: {
-    //   "url": "https://gh.lzwme.workers.dev",
-    //   "name": "CF加速 2",
-    //   "desc": "【CF加速】每日10万次调用上限,由 @renxia 提供",
-    //   types: ['clone', 'download', 'raw', 'mirror'],
-    // },
-    // gitclone: {
-    //   "url": "https://gitclone.com/github.com",
-    //   "name": "GitClone",
-    //   "desc": "GitHub clone 缓存加速网站",
-    //   types: ['clone'],
-    // },
   };
   const OtherUrl = [
     ["https://github.com/lzwme/vm-gh-proxy-cn", "脚本Github仓库地址，点个赞谢谢"],
@@ -266,9 +221,9 @@
       const $el = $(this);
       const href = $el.attr('href');
       $el.parent()
-      .after(`<div style="position: absolute; right: 180px; top: 0;">${
+      .after(`<div style="position: absolute; right: 120px; top: 0;">${
         DownloadSet.map((item) => {
-          return `<a class="flex-1 btn btn-outline get-repo-btn BtnGroup-item" style="float: none; border-color: var(--color-btn-outline-text)"
+          return `<a class="flex-1 btn btn-outline get-repo-btn BtnGroup-item" style="float:none; border-color:var(--color-btn-outline-text);padding:5px"
             href="${item.format(href, 'download')}" title="${item.desc}">${item.name}</a>`;
         }).join('')
       }</div>`);

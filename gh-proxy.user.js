@@ -20,10 +20,10 @@
 (function () {
   const clonePrefix = 'git clone --depth 1 ';
   const Mirrors = {
-    moeyy: {
-      url: 'https://github.moeyy.xyz/github.com',
-      name: 'moeyy',
-      desc: 'github.moeyy.xyz 代理',
+    ghfast: {
+      url: 'https://ghfast.top/github.com',
+      name: 'ghfast',
+      desc: 'ghfast 代理',
       types: ['clone', 'download', 'raw'],
       format(url) {
         return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;

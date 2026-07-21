@@ -4,8 +4,8 @@
 // @author        renxia (https://lzw.me)
 // @homepageURL   https://github.com/lzwme/vm-gh-proxy-cn
 // @supportURL    https://github.com/lzwme/vm-gh-proxy-cn/issues
-// @updateURL     https://mirror.ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.user.js
-// @downloadURL   https://mirror.ghproxy.com/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.user.js
+// @updateURL     https://gh-proxy.org/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.user.js
+// @downloadURL   https://gh-proxy.org/github.com/lzwme/vm-gh-proxy-cn/blob/main/gh-proxy.user.js
 // @license       MIT License
 // @description   GitHub 访问加速助手。支持 GitHub 的 clone、release/raw/zip 下载加速
 // @include       *://github.com/*
@@ -13,26 +13,26 @@
 // @include       *://hub.fastgit.xyz/*
 // @require       https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.min.js
 // @icon          https://github.githubassets.com/favicon.ico
-// @version       1.1.3
-// @update        2025.01.09
+// @version       1.1.4
+// @update        2026.07.21
 // ==/UserScript==
 
 (function () {
   const clonePrefix = 'git clone --depth 1 ';
   const Mirrors = {
-    ghfast: {
-      url: 'https://ghfast.top/github.com',
-      name: 'ghfast',
-      desc: 'ghfast 代理',
+    ghproxy: {
+      url: 'https://gh-proxy.org/github.com',
+      name: 'gh-proxy',
+      desc: 'gh-proxy 代理',
       types: ['clone', 'download', 'raw'],
       format(url) {
         return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
       },
     },
-    ghpscc: {
-      url: 'https://ghps.cc/github.com',
-      name: 'ghps',
-      desc: '基于 gh-proxy 的代理',
+    ghfast: {
+      url: 'https://ghfast.top/github.com',
+      name: 'ghfast',
+      desc: 'ghfast 代理',
       types: ['clone', 'download', 'raw'],
       format(url) {
         return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
@@ -43,24 +43,6 @@
       name: 'ddlc',
       desc: '基于 gh-proxy 的代理',
       types: ['clone', 'download', 'raw'],
-      format(url) {
-        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
-      },
-    },
-    ghproxy1: {
-      url: 'https://gh.api.99988866.xyz/github.com',
-      name: '99988866',
-      desc: 'ghproxy 代理（演示站）',
-      types: ['clone', 'download', 'raw'],
-      format(url) {
-        return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
-      },
-    },
-    xyz201704: {
-      url: 'https://scoop.201704.xyz/github.com',
-      name: '201704',
-      desc: '开源的 scoop 国内镜像方案',
-      types: ['raw', 'download'],
       format(url) {
         return `${this.url}/${url.replace(/^(https:\/\/github.com)?\//, '')}`;
       },
@@ -83,13 +65,6 @@
       "desc": "只能浏览图片和源代码文件，文件大小限制为30MB",
       types: ['raw'],
     },
-    gitmirror: {
-      name: 'gitmirror',
-      url: 'https://hub.gitmirror.com',
-      home: 'https://www.7ed.net/gitmirror/hub.html',
-      desc: '加速下载 Github Release、Archive 等文件',
-      types: ['download', 'raw'],
-    },
     fastgitSsh: {
       "url": "git@ssh.fastgit.org",
       "name": "FastGit",
@@ -102,12 +77,6 @@
     //   "desc": "fastgit raw",
     //   types: ['raw'],
     // },
-    netnr: {
-      "url": "https://cors.zme.ink/https://github.com",
-      "name": "netnr",
-      "desc": "由@netnr提供",
-      types: ['mirror', 'download'], // 'raw'
-    },
   };
   const OtherUrl = [
     ["https://github.com/lzwme/vm-gh-proxy-cn", "脚本Github仓库地址，点个赞谢谢"],
@@ -128,7 +97,7 @@
           }
         }
 
-        if (type === 'raw' && ['Statically', 'jsDelivr', 'gh-xyz'].includes(item.name)) {
+        if (type === 'raw' && ['Statically', 'jsDelivr'].includes(item.name)) {
           return item.url + href.replace(`${repo}/raw/`, `${repo}@`).replace('https://github.com', '');
         }
         const sep = item.url.includes('@') ? ':' : '/';
@@ -217,19 +186,22 @@
   function addReleasesList(retry = 3) {
     const $alist = $(".Box--condensed").find("[href]");
     if (!$alist.length && retry) return setTimeout(() => addReleasesList(--retry), 1000);
+    $('.release-proxy-wrap').remove(); // 清理旧注入
     $alist.each(function() {
       const $el = $(this);
       const href = $el.attr('href');
-      $el.parent()
-      .after(`<div style="position: absolute; right: 120px; top: 0;">${
+      if (!href) return;
+      const $parent = $el.parent();
+      $parent.parent().css({ position: 'relative' });
+      $parent.after(`<div class="release-proxy-wrap" style="position: absolute; right: 120px; top: 0;">${
         DownloadSet.map((item) => {
           return `<a class="flex-1 btn btn-outline get-repo-btn BtnGroup-item" style="float:none; border-color:var(--color-btn-outline-text);padding:5px"
             href="${item.format(href, 'download')}" title="${item.desc}">${item.name}</a>`;
         }).join('')
       }</div>`);
-      $el.parent().parent().css({ position: 'relative' });
     });
   }
+
   /**
    * 添加菜单列表
    */
@@ -315,16 +287,18 @@
   }
 
   function initProxyButton() {
-    $('#js-repo-pjax-container').off('mouseenter', 'a').on('mouseenter', 'a', function(ev) {
+    $(document).off('mouseenter', '#js-repo-pjax-container a').on('mouseenter', '#js-repo-pjax-container a', function(ev) {
       const $el = $(this);
       if ($el.attr('id') === 'gh-proxy-btn') return;
 
-      const preBtn = $('#gh-proxy-btn');
       const href =$el.attr('href').replace(/^https:\/\/github\.com/, '');
+      if (!href) return;
+
+      const preBtn = $('#gh-proxy-btn');
       const proxyHref = `${Mirrors.ghproxy.url}${href}`;
       if (!/\/(blob|release|archive)\//.test(href) || href.startsWith('http') || preBtn.attr('href') === proxyHref) return;
 
-      $('#gh-proxy-btn').remove();
+      preBtn.remove();
       const $btn = $(`<a class="btn" href="${proxyHref}" target="_blank" title="proxy link" id="gh-proxy-btn">🚀</a>`);
 
       $el.parent().append($btn).css({ position: 'relative', overflow: 'visible' });
